@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestão de Clientes | UnitedVip</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="brand">
+      <img src="assets/logo.png" alt="UnitedVip">
+      <div>
+        <h1>United<span>Vip</span></h1>
+        <p>Gestão de clientes</p>
+      </div>
+    </div>
+
+    <nav>
+      <button id="btnCadastro">Cadastro</button>
+      <button id="btnPainel">Painel</button>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <section class="hero">
+      <h2>Armazenador de Clientes</h2>
+      <p>
+        Cadastre novos assinantes, acompanhe planos, pagamentos,
+        indicações e status dos clientes da UnitedVip.
+      </p>
+
+      <div class="benefit">
+        <span>👤</span>
+        <div>
+          <h3>Cadastro completo</h3>
+          <p>Dados básicos, plano, pagamento e origem do cliente.</p>
+        </div>
+      </div>
+
+      <div class="benefit">
+        <span>📊</span>
+        <div>
+          <h3>Painel de controle</h3>
+          <p>Visualize clientes ativos, inativos e organize sua base.</p>
+        </div>
+      </div>
+
+      <div class="benefit">
+        <span>🚀</span>
+        <div>
+          <h3>Gestão profissional</h3>
+          <p>Projeto ideal para seu portfólio front-end.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="areaCadastro" class="card">
+      <form id="formCliente">
+        <h2>Cadastro do Cliente</h2>
+        <p class="subtitle">Preencha as informações do novo assinante</p>
+
+        <div class="grid">
+          <div class="input-group">
+            <label>Primeiro nome *</label>
+            <input type="text" id="primeiroNome" placeholder="Ex: Pedro">
+            <small></small>
+          </div>
+
+          <div class="input-group">
+            <label>Segundo nome *</label>
+            <input type="text" id="segundoNome" placeholder="Ex: Henrique">
+            <small></small>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="input-group">
+            <label>WhatsApp *</label>
+            <input type="tel" id="whatsapp" placeholder="(81) 99999-9999">
+            <small></small>
+          </div>
+
+          <div class="input-group">
+            <label>Idade *</label>
+            <input type="number" id="idade" placeholder="Ex: 19">
+            <small></small>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="input-group">
+            <label>Dia que assinou *</label>
+            <input type="date" id="dataAssinatura">
+            <small></small>
+          </div>
+
+          <div class="input-group">
+            <label>Plano *</label>
+            <select id="plano">
+              <option value="">Selecione</option>
+              <option value="1 Tela - R$29,99">1 Tela - R$29,99</option>
+              <option value="2 Telas - R$49,99">2 Telas - R$49,99</option>
+              <option value="Plano Personalizado">Plano Personalizado</option>
+            </select>
+            <small></small>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Forma de pagamento *</label>
+          <select id="pagamento">
+            <option value="">Selecione</option>
+            <option value="Pix">Pix</option>
+            <option value="Dinheiro">Dinheiro</option>
+          </select>
+          <small></small>
+        </div>
+
+        <div class="input-group">
+          <label>Onde achou a UnitedVip? *</label>
+
+          <div class="checks">
+            <label><input type="radio" name="origem" value="Instagram"> Instagram</label>
+            <label><input type="radio" name="origem" value="Indicação"> Indicação</label>
+            <label><input type="radio" name="origem" value="WhatsApp"> WhatsApp</label>
+            <label><input type="radio" name="origem" value="Facebook"> Facebook</label>
+            <label><input type="radio" name="origem" value="Panfleto"> Panfleto</label>
+            <label><input type="radio" name="origem" value="TikTok"> TikTok</label>
+          </div>
+
+          <small id="erroOrigem"></small>
+        </div>
+
+        <div class="input-group hidden" id="areaIndicacao">
+          <label>Nome de quem indicou *</label>
+          <input type="text" id="nomeIndicacao" placeholder="Digite o nome da pessoa">
+          <small></small>
+        </div>
+
+        <button type="submit">Salvar cliente</button>
+      </form>
+    </section>
+
+    <section id="areaPainel" class="card hidden">
+      <h2>Painel de Clientes</h2>
+      <p class="subtitle">Controle seus clientes ativos e inativos</p>
+
+      <div class="stats">
+        <div>
+          <h3 id="totalClientes">0</h3>
+          <p>Total</p>
+        </div>
+        <div>
+          <h3 id="clientesAtivos">0</h3>
+          <p>Ativos</p>
+        </div>
+        <div>
+          <h3 id="clientesInativos">0</h3>
+          <p>Inativos</p>
+        </div>
+      </div>
+
+      <div class="filters">
+        <input type="text" id="buscaCliente" placeholder="Buscar cliente...">
+        <select id="filtroStatus">
+          <option value="todos">Todos</option>
+          <option value="Ativo">Ativos</option>
+          <option value="Inativo">Inativos</option>
+        </select>
+      </div>
+
+      <div id="listaClientes" class="lista-clientes"></div>
+    </section>
+
+  </main>
+
+  <footer>
+    Mais conteúdo. Mais emoção. <span>Mais gestão para você.</span>
+  </footer>
+
+<script type="module" src="js/cadastro.js"></script></body>
+</html>
