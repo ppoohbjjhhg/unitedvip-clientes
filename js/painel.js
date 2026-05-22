@@ -2,7 +2,9 @@ import { db, auth } from "./firebase.js";
 
 import {
   collection,
-  getDocs
+  getDocs,
+  deleteDoc,
+  doc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
@@ -10,95 +12,88 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-const listaClientes =
-  document.getElementById("listaClientes");
+const listaClientes = document.getElementById("listaClientes");
+const logoutBtn = document.getElementById("logoutBtn");
 
-const logoutBtn =
-  document.getElementById("logoutBtn");
-
-// Verificar login
 onAuthStateChanged(auth, async (user) => {
-
   if (!user) {
-
     window.location.href = "login.html";
-
     return;
   }
 
   carregarClientes();
-
 });
 
-// Logout
 logoutBtn.addEventListener("click", async () => {
-
   await signOut(auth);
-
   window.location.href = "login.html";
-
 });
 
-// Buscar clientes
 async function carregarClientes() {
-
   listaClientes.innerHTML = "";
 
-  const querySnapshot =
-    await getDocs(collection(db, "clientes"));
+  const querySnapshot = await getDocs(collection(db, "clientes"));
 
-  querySnapshot.forEach((doc) => {
+  if (querySnapshot.empty) {
+    listaClientes.innerHTML = `<p class="subtitle">Nenhum cliente cadastrado.</p>`;
+    return;
+  }
 
-    const cliente = doc.data();
+  querySnapshot.forEach((documento) => {
+    const cliente = documento.data();
+    const idCliente = documento.id;
 
     listaClientes.innerHTML += `
-
       <div class="cliente">
+        <div class="cliente-topo">
+          <div>
+            <h2>${cliente.primeiroNome} ${cliente.segundoNome}</h2>
 
-        <h2>
-          ${cliente.primeiroNome}
-          ${cliente.segundoNome}
-        </h2>
+            <p><strong>WhatsApp:</strong> ${cliente.whatsapp}</p>
+            <p><strong>Idade:</strong> ${cliente.idade}</p>
+            <p><strong>Plano:</strong> ${cliente.plano}</p>
+            <p><strong>Pagamento:</strong> ${cliente.pagamento}</p>
+            <p><strong>Origem:</strong> ${cliente.origem}</p>
+            <p><strong>Indicação:</strong> ${cliente.indicadoPor}</p>
+            <p><strong>Status:</strong> ${cliente.status}</p>
+          </div>
+        </div>
 
-        <p>
-          WhatsApp:
-          ${cliente.whatsapp}
-        </p>
-
-        <p>
-          Idade:
-          ${cliente.idade}
-        </p>
-
-        <p>
-          Plano:
-          ${cliente.plano}
-        </p>
-
-        <p>
-          Pagamento:
-          ${cliente.pagamento}
-        </p>
-
-        <p>
-          Origem:
-          ${cliente.origem}
-        </p>
-
-        <p>
-          Indicação:
-          ${cliente.indicadoPor}
-        </p>
-
-        <p>
-          Status:
-          ${cliente.status}
-        </p>
-
+        <div class="acoes">
+          <button class="btn-excluir" data-id="${idCliente}">
+            Excluir cadastro
+          </button>
+        </div>
       </div>
-
     `;
-
   });
 
+  ativarBotoesExcluir();
+}
+
+function ativarBotoesExcluir() {
+  const botoesExcluir = document.querySelectorAll(".btn-excluir");
+
+  botoesExcluir.forEach((botao) => {
+    botao.addEventListener("click", async () => {
+      const idCliente = botao.getAttribute("data-id");
+
+      const confirmar = confirm(
+        "Tem certeza que deseja apagar este cadastro? Essa ação não poderá ser desfeita."
+      );
+
+      if (!confirmar) return;
+
+      try {
+        await deleteDoc(doc(db, "clientes", idCliente));
+
+        alert("Cadastro apagado com sucesso!");
+
+        carregarClientes();
+      } catch (error) {
+        console.log(error);
+        alert("Erro ao apagar cadastro.");
+      }
+    });
+  });
 }

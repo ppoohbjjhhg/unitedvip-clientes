@@ -350,3 +350,25 @@ footer span {
     grid-template-columns: 1fr;
   }
 }
+
+.acoes {
+  margin-top: 18px;
+  display: flex;
+  gap: 10px;
+}
+
+.btn-excluir {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ff3b3b, #b91c1c);
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.btn-excluir:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px rgba(255, 59, 59, 0.45);
+}
